@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-
-const connectToDB = async () => {
+const connectToDB = async (dblink) => {
   try {
-    await mongoose.connect(process.env.DB_LINK);
+    await mongoose.connect(dblink);
     console.log("MongoDB connected successfully");
   } catch (e) {
     console.error("MongoDB connection failed");

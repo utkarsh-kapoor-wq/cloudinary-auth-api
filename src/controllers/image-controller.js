@@ -1,6 +1,5 @@
 import Image from "../models/Image.js";
 import { uploadToCloudinary } from "../helpers/cloudinaryHelper.js";
-import fs from "fs";
 import cloudinary from "../config/cloudinary.js";
 
 export const uploadImageController = async (req, res) => {
@@ -48,17 +47,17 @@ export const uploadImageController = async (req, res) => {
 export const fetchImagesController = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
-    const skip = (page - 1) * limit;
+    const limit = parseInt(req.query.limit) ||  5 ; 
+    const skip = (page-1)*limit;
 
     const sortBy = req.query.sortBy || "createdAt";
-    const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
+    const sortOrder = req.query.sortOrder === 'asc'?  1:-1;
     const totalImages = await Image.countDocuments();
-    const totalPages = Math.ceil(totalImages / limit);
+    const totalPages = Math.ceil(totalImages/limit)
+    const sortobj= {};
 
-    const sortObj = {};
-    sortObj[sortBy] = sortOrder;
-    const images = await Image.find().sort(sortObj).skip(skip).limit(limit);
+    sortobj[sortBy] = sortOrder;
+    const images = await Image.find().sort(sortobj).skip(skip).limit(limit);
 
     if (images) {
       res.status(200).json({
@@ -80,11 +79,12 @@ export const fetchImagesController = async (req, res) => {
 
 export const deleteImageController = async (req, res) => {
   try {
-    const getCurrentIdOfImageToBeDeleted = req.params.id;
+
+    const getcurrentidofimg = req.params.id;
     const userId = req.userInfo.userId;
+    // const userId = req.userInfo.userId;
 
-    const image = await Image.findById(getCurrentIdOfImageToBeDeleted);
-
+    const image = await Image.findById(getcurrentidofimg);
     if (!image) {
       return res.status(404).json({
         success: false,
@@ -104,7 +104,7 @@ export const deleteImageController = async (req, res) => {
     await cloudinary.uploader.destroy(image.publicId);
 
     //delete this image from mongodb database
-    await Image.findByIdAndUpdate(getCurrentIdOfImageToBeDeleted);
+    await Image.findByIdAndUpdate(getcurrentidofimg);
 
     res.status(200).json({
       success: true,

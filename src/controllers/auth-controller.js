@@ -39,7 +39,7 @@ const registerUser = async (req, res) => {
       res.status(201).json({
         success: true,
         message: "User registered successfully!",
-      });
+      }); 
     } else {
       res.status(400).json({
         success: false,
@@ -55,7 +55,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-//login controller
+//login controllers
 
 const loginUser = async (req, res) => {
   try {
@@ -110,10 +110,10 @@ const loginUser = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const userId = req.userInfo.userId;
-
+    
     //extract old and new password;
     const { oldPassword, newPassword } = req.body;
-
+    
     //find the current logged in user
     const user = await User.findById(userId);
 

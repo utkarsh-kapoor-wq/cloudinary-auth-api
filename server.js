@@ -6,17 +6,12 @@ import homeRoutes from "./src/routes/home-routes.js";
 import adminRoutes from "./src/routes/admin-routes.js";
 import uploadImageRoutes from "./src/routes/image-routes.js";
 
-dotenv.config();
-console.log(
-  process.env.CLOUDINARY_CLOUD_NAME,
-  process.env.CLOUDINARY_API_KEY,
-  process.env.CLOUDINARY_API_SECRET
-);
-connectToDB();
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+connectToDB(process.env.DB_LINK);
 //Middlewares
 app.use(express.json());
 
